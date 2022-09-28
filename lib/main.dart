@@ -32,6 +32,7 @@ class MyApp extends StatelessWidget {
         builder: (context, AsyncSnapshot<String?> snapshot) {
           String? locale = snapshot.data;
           return MaterialApp(
+            title: '<app.title>'.i18n,
             debugShowCheckedModeBanner: false,
             // Localization
             localizationsDelegates: const [
