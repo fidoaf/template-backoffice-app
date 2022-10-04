@@ -3,19 +3,14 @@ import 'package:backoffice_app/view/widgets/basic_side_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'package:backoffice_app/view/widgets/poc.dart';
-import 'package:backoffice_app/locale/widgets/dynamic_locale_auto_switch.dart';
-
 import 'package:i18n_extension/i18n_widget.dart';
 
 import 'locale/main.i18n.dart';
 
-// App preferences
-// import 'package:shared_preferences/shared_preferences.dart';
+import 'package:backoffice_app/view/widgets/poc.dart';
 
 // Theming
 import 'package:backoffice_app/configuration/dynamic_configuration.dart';
-import 'package:backoffice_app/theming/widgets/dynamic_theme_auto_switch.dart';
 
 // Desktop
 import 'package:window_manager/window_manager.dart';
