@@ -1,3 +1,4 @@
+import 'package:backoffice_app/services/message_service.dart';
 import 'package:flutter/material.dart';
 
 import 'package:backoffice_app/services/backend_service.dart';
@@ -124,6 +125,10 @@ class _LoginPageState extends State<LoginPage> {
                           onPressed: () {
                             // Validate form
                             if (_formKey.currentState!.validate()) {
+                              //
+                              MessageService.showInfo(context,
+                                  message: 'Loading...');
+                              //
                               apiService
                                   .login(nameController.text,
                                       passwordController.text)
@@ -139,20 +144,13 @@ class _LoginPageState extends State<LoginPage> {
                                           }
                                         else
                                           {
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(SnackBar(
-                                              content: Text(result['error']),
-                                              backgroundColor: Colors.red,
-                                            ))
+                                            MessageService.showError(context,
+                                                message: result['error'])
                                           }
                                       });
                             } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Please fill all the fields'),
-                                  backgroundColor: Colors.red,
-                                ),
-                              );
+                              MessageService.showError(context,
+                                  message: 'Please fill all the fields');
                             }
                           },
                         )),
