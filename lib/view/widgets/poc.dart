@@ -12,6 +12,7 @@ class ProofOfConceptWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(),
         body: Center(
             child: FutureBuilder<String>(
                 future: loadNotice(),
