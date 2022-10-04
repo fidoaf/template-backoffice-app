@@ -1,10 +1,14 @@
+import 'package:backoffice_app/default.i18n.dart';
+import 'package:backoffice_app/services/backend_service.dart';
 import 'package:flutter/material.dart';
+
+import 'package:badges/badges.dart';
 
 import 'package:backoffice_app/locale/widgets/dynamic_locale_auto_switch.dart';
 import 'package:backoffice_app/theming/widgets/dynamic_theme_auto_switch.dart';
 
-class BasicSideBar extends StatelessWidget {
-  const BasicSideBar({super.key});
+class FullSideBar extends StatelessWidget {
+  const FullSideBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,8 +18,8 @@ class BasicSideBar extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: [
           UserAccountsDrawerHeader(
-            accountName: Text('Oflutter.com'),
-            accountEmail: Text('example@gmail.com'),
+            accountName: const Text('Jane Smith'),
+            accountEmail: const Text('j.smith@work.com'),
             currentAccountPicture: CircleAvatar(
               child: ClipOval(
                 child: Image.network(
@@ -26,7 +30,7 @@ class BasicSideBar extends StatelessWidget {
                 ),
               ),
             ),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.blue,
               image: DecorationImage(
                   fit: BoxFit.fill,
@@ -35,40 +39,75 @@ class BasicSideBar extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: Icon(Icons.favorite),
-            title: Text('Favorites'),
-            onTap: () => null,
+            leading: const Icon(Icons.favorite),
+            title: Text('Favorites'.i18n),
+            onTap: () {},
           ),
           ListTile(
-            leading: Icon(Icons.person),
-            title: Text('Friends'),
-            onTap: () => null,
+            leading: const Icon(Icons.person),
+            title: const Text('Friends'),
+            onTap: () {},
           ),
           ListTile(
-            leading: Icon(Icons.share),
-            title: Text('Share'),
-            onTap: () => null,
+            leading: const Icon(Icons.share),
+            title: const Text('Share'),
+            onTap: () {},
           ),
           ListTile(
-            leading: Icon(Icons.notifications),
-            title: Text('Request'),
+            leading: Badge(
+              badgeContent: const Text('3'),
+              child: const Icon(Icons.notifications),
+            ),
+            title: const Text('Notifications'),
           ),
-          Divider(),
-          ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Settings'),
-            onTap: () => null,
+          const Divider(),
+          const ListTile(
+            leading: Icon(Icons.color_lens),
+            title: Text('Dark Theme'),
+            trailing: DynamicThemeAutoSwitch(),
           ),
-          ListTile(
-            leading: Icon(Icons.description),
-            title: Text('Policies'),
-            onTap: () => null,
+          const Divider(),
+          const ListTile(
+            leading: Icon(Icons.language),
+            title: Text('Language'),
+            trailing: DynamicLocaleAutoSwitch(),
           ),
-          Divider(),
+          const Divider(),
           ListTile(
-            title: Text('Exit'),
-            leading: Icon(Icons.exit_to_app),
-            onTap: () => null,
+            title: const Text('Exit'),
+            leading: const Icon(Icons.exit_to_app),
+            onTap: () {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext ctx) {
+                    return AlertDialog(
+                      title: const Text('Please Confirm'),
+                      content:
+                          const Text('Are you sure you would like to logout?'),
+                      actions: [
+                        // The "Yes" button
+                        TextButton(
+                            onPressed: () {
+                              // Close the dialog
+                              Navigator.of(context).pop();
+                              // Close the drawer
+                              Navigator.of(context).pop();
+                              // Go back to the login page
+                              Navigator.of(context).pop();
+                              //
+                              BackendService().logout();
+                            },
+                            child: const Text('Yes')),
+                        TextButton(
+                            onPressed: () {
+                              // Close the dialog
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text('No'))
+                      ],
+                    );
+                  });
+            },
           ),
         ],
       ),

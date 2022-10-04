@@ -1,4 +1,5 @@
 import 'package:backoffice_app/services/message_service.dart';
+import 'package:backoffice_app/view/widgets/dashboard_page.dart';
 import 'package:flutter/material.dart';
 
 import 'package:backoffice_app/services/backend_service.dart';
@@ -132,22 +133,20 @@ class _LoginPageState extends State<LoginPage> {
                               apiService
                                   .login(nameController.text,
                                       passwordController.text)
-                                  .then((Map<String, dynamic> result) => {
-                                        if (result['error'] == null)
-                                          {
-                                            Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const ProofOfConceptWidget(),
-                                              ),
-                                            )
-                                          }
-                                        else
-                                          {
-                                            MessageService.showError(context,
-                                                message: result['error'])
-                                          }
-                                      });
+                                  .then((Map<String, dynamic> result) {
+                                if (result['error'] == null) {
+                                  MessageService.clear(context);
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const DashboardWidget(),
+                                    ),
+                                  );
+                                } else {
+                                  MessageService.showError(context,
+                                      message: result['error']);
+                                }
+                              });
                             } else {
                               MessageService.showError(context,
                                   message: 'Please fill all the fields');
