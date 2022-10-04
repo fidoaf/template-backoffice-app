@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:i18n_extension/i18n_extension.dart';
 
 extension Localization on String {
@@ -6,7 +8,7 @@ extension Localization on String {
       const {
         "iw": "<app.title>",
         "en": "Backoffice application",
-        "es": "Applicación de gestión",
+        "es": "Aplicación de gestión",
       } +
       const {
         "iw": "<btn.counter.message>",
@@ -19,7 +21,8 @@ extension Localization on String {
         "es": "Cambiar idioma",
       };
 
-  String get i18n => localize(this, _t);
+  String translate(Locale? locale) =>
+      localize(this, _t, locale: locale!.languageCode);
 
   String fill(List<Object> params) => localizeFill(this, params);
 

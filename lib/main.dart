@@ -1,60 +1,75 @@
-import 'dart:async';
-import 'package:flutter/foundation.dart';
+import 'package:backoffice_app/services/backend_service.dart';
+import 'package:backoffice_app/view/widgets/basic_side_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+
+import 'package:backoffice_app/view/widgets/poc.dart';
+import 'package:backoffice_app/locale/widgets/dynamic_locale_auto_switch.dart';
+
 import 'package:i18n_extension/i18n_widget.dart';
 
-import 'main.i18n.dart';
+import 'locale/main.i18n.dart';
 
-import 'package:shared_preferences/shared_preferences.dart';
+// App preferences
+// import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
+// Theming
+import 'package:backoffice_app/configuration/dynamic_configuration.dart';
+import 'package:backoffice_app/theming/widgets/dynamic_theme_auto_switch.dart';
 
-void main() {
-  runApp(EasyDynamicThemeWidget(
-    child: const MyApp(),
+// Desktop
+import 'package:window_manager/window_manager.dart';
+
+void main() async {
+  /**
+   * Desktop only
+   */
+  WidgetsFlutterBinding.ensureInitialized();
+  // Must add this line.
+  await windowManager.ensureInitialized();
+
+  WindowOptions windowOptions = const WindowOptions();
+  windowManager.waitUntilReadyToShow(windowOptions, () async {
+    await windowManager.show();
+    await windowManager.focus();
+  });
+  /***/
+
+  runApp(const DynamicConfigurationWidget(
+    child: MyApp(),
   ));
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  Future<String?> getLocaleFromSharedPrefs() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('locale');
-  }
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: getLocaleFromSharedPrefs(),
-        builder: (context, AsyncSnapshot<String?> snapshot) {
-          String? locale = snapshot.data;
-          return MaterialApp(
-            title: '<app.title>'.i18n,
-            debugShowCheckedModeBanner: false,
-            // Localization
-            localizationsDelegates: const [
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: const [Locale('en'), Locale('es')],
-            locale: locale == null
-                // By default use the OS preferences
-                // TODO: Check case if locale is not in the list of supported languages
-                ? PlatformDispatcher.instance.locale
-                : Locale(locale),
-            // Theming
-            theme: ThemeData.light(),
-            darkTheme: ThemeData.dark(),
-            themeMode:
-                EasyDynamicTheme.of(context).themeMode ?? ThemeMode.system,
-            // Internationalization widget
-            home: I18n(child: MyHomePage(title: '<app.title>'.i18n)),
-          );
-        });
+    Locale? locale = DynamicConfiguration.of(context).locale;
+    final String title = '<app.title>'.translate(locale);
+    windowManager.setTitle(title);
+    return I18n(
+        child: MaterialApp(
+      title: title,
+
+      debugShowCheckedModeBanner: false,
+
+      // Localization configuration
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: DynamicConfiguration.of(context).locales,
+      locale: locale,
+
+      // Theming configuration
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
+      themeMode: DynamicConfiguration.of(context).themeMode,
+      // Internationalization widget
+      home: MyHomePage(title: title),
+    ));
   }
 }
 
@@ -68,25 +83,31 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  final BackendService apiService = BackendService();
 
   TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  Future<void> _changelocale() async {
-    final SharedPreferences prefs = await _prefs;
-    String locale = I18n.localeStr == "es" ? "en" : "es";
-    prefs.setString('locale', locale).then((bool success) {
-      I18n.of(context).locale = Locale(locale);
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
+    Locale? locale = DynamicConfiguration.of(context).locale;
     return Scaffold(
+      drawer: const BasicSideBar(),
       appBar: AppBar(
-        title: Text(widget.title),
-        actions: [EasyDynamicThemeAutoSwitch()],
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              icon: const Icon(
+                Icons.settings_applications,
+                size: 36,
+              ),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+              tooltip: MaterialLocalizations.of(context).showMenuTooltip,
+            );
+          },
+        ),
       ),
       body: Center(
         child: Padding(
@@ -97,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(10),
                     child: Text(
-                      '<app.title>'.i18n,
+                      '<app.title>'.translate(locale),
                       style: const TextStyle(
                           color: Colors.blue,
                           fontWeight: FontWeight.w500,
@@ -133,7 +154,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 TextButton(
                   onPressed: () {
-                    //forgot password screen
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const ProofOfConceptWidget(),
+                      ),
+                    );
                   },
                   child: const Text(
                     'Forgot Password',
@@ -144,7 +169,29 @@ class _MyHomePageState extends State<MyHomePage> {
                     padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                     child: ElevatedButton(
                       child: const Text('Login'),
-                      onPressed: () {},
+                      onPressed: () {
+                        apiService
+                            .login(nameController.text, passwordController.text)
+                            .then((Map<String, dynamic> result) => {
+                                  if (result['error'] == null)
+                                    {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const ProofOfConceptWidget(),
+                                        ),
+                                      )
+                                    }
+                                  else
+                                    {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                        content: Text(result['error']),
+                                        backgroundColor: Colors.red,
+                                      ))
+                                    }
+                                });
+                      },
                     )),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -156,7 +203,11 @@ class _MyHomePageState extends State<MyHomePage> {
                         style: TextStyle(fontSize: 20),
                       ),
                       onPressed: () {
-                        //signup screen
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const ProofOfConceptWidget(),
+                          ),
+                        );
                       },
                     )
                   ],
@@ -164,11 +215,11 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             )),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _changelocale,
-        tooltip: '<btn.lang.label>'.i18n,
-        child: const Icon(Icons.language),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: _changelocale,
+      //   tooltip: '<btn.lang.label>'.i18n,
+      //   child: const Icon(Icons.language),
+      // ),
     );
   }
 }
