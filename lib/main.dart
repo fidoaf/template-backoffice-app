@@ -1,8 +1,13 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+
+import 'package:animated_splash_screen/animated_splash_screen.dart';
+// ignore: depend_on_referenced_packages
+import 'package:page_transition/page_transition.dart';
 
 // Desktop
 import 'package:window_manager/window_manager.dart';
@@ -57,25 +62,29 @@ class BackofficeApp extends StatelessWidget {
     setWindowTitle(title);
     return I18n(
         child: MaterialApp(
-      title: title,
+            title: title,
+            debugShowCheckedModeBanner: false,
 
-      debugShowCheckedModeBanner: false,
+            // Localization configuration
+            localizationsDelegates: const [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: DynamicConfiguration.of(context).locales,
+            locale: locale,
 
-      // Localization configuration
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: DynamicConfiguration.of(context).locales,
-      locale: locale,
-
-      // Theming configuration
-      theme: ThemeData.light(),
-      darkTheme: ThemeData.dark(),
-      themeMode: DynamicConfiguration.of(context).themeMode,
-      // Internationalization widget
-      home: LoginPage(title: title),
-    ));
+            // Theming configuration
+            theme: ThemeData.light(),
+            darkTheme: ThemeData.dark(),
+            themeMode: DynamicConfiguration.of(context).themeMode,
+            // Splash screen
+            home: AnimatedSplashScreen(
+                duration: 3000,
+                splash: 'assets/images/logo.png',
+                nextScreen: LoginPage(title: title),
+                splashTransition: SplashTransition.fadeTransition,
+                pageTransitionType: PageTransitionType.scale,
+                backgroundColor: Colors.blue)));
   }
 }
