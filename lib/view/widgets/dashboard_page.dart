@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:backoffice_app/services/message_service.dart';
 import 'package:backoffice_app/theming/widgets/dynamic_theme_auto_switch.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -54,39 +55,53 @@ class DashboardWidget extends StatelessWidget {
               padding: const EdgeInsets.all(10),
               itemCount: _myData.length,
               itemBuilder: (BuildContext ctx, index) {
-                return ColoredBox(
-                    color: _myData[index]['status']
-                        ? Colors.green.shade100
-                        : Colors.orange.shade100,
-                    child: Align(
-                        alignment: Alignment.center,
-                        child: ListView(shrinkWrap: true, children: [
-                          Center(
-                              child: Text(_myData[index]['name'],
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                  ))),
-                          Center(
-                              child: Text('(${_myData[index]['ip']})',
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                  ))),
-                          const Center(
-                              child: Text('Status:',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                  ))),
-                          Center(
-                            child: Icon(
+                return GestureDetector(
+                    onTap: () {
+                      MessageService.showInfo(context,
+                          message: '${"<btn.loading>".translate(locale)}...');
+                    },
+                    child: ColoredBox(
+                        color: _myData[index]['status']
+                            ? Colors.green.shade100
+                            : Colors.orange.shade100,
+                        child: Align(
+                            alignment: Alignment.center,
+                            child: ListView(shrinkWrap: true, children: [
+                              Center(
+                                  child: Text(_myData[index]['name'],
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                      ))),
+                              Center(
+                                  child: Text('(${_myData[index]['ip']})',
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                      ))),
+                              const Center(
+                                  child: Text('Status:',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                      ))),
+                              Center(
+                                child: Icon(
+                                  _myData[index]['status']
+                                      ? Icons.check
+                                      : Icons.close,
+                                  color: _myData[index]['status']
+                                      ? Colors.green
+                                      : Colors.red,
+                                ),
+                              ),
                               _myData[index]['status']
-                                  ? Icons.check
-                                  : Icons.close,
-                              color: _myData[index]['status']
-                                  ? Colors.green
-                                  : Colors.red,
-                            ),
-                          ),
-                        ])));
+                                  ? Container()
+                                  : IconButton(
+                                      icon: const Icon(Icons.share),
+                                      color: Colors.black,
+                                      tooltip: 'Share failure report'
+                                          .translate(locale),
+                                      onPressed: () {},
+                                    )
+                            ]))));
               })),
     );
   }
