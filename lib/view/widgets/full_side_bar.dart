@@ -53,14 +53,19 @@ class FullSideBar extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.person),
-            title: const Text('Friends'),
-            onTap: () {},
+            title: const Text('Users'),
+            onTap: () {
+              Navigator.pop(context);
+              MessageService.showWarning(context, message: 'Coming soon');
+            },
           ),
           ListTile(
             leading: const Icon(Icons.camera_alt),
             title: const Text('Capture'),
             onTap: () async {
+              Navigator.pop(context);
               MessageService.showWarning(context, message: 'Coming soon');
+              // TODO: finish development once the share functionality can be included for all platforms
               // final String path =
               //     (await getApplicationDocumentsDirectory()).path;
               // String fileName = '${DateTime.now().microsecondsSinceEpoch}.png';
