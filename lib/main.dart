@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -13,20 +16,32 @@ import 'package:backoffice_app/configuration/dynamic_configuration.dart';
 
 import 'package:backoffice_app/view/widgets/login_page.dart';
 
-void main() async {
-  /**
+Future<void> setupWindow() async {
+  if (!kIsWeb && (Platform.isWindows || Platform.isLinux || Platform.isMacOS)) {
+    /**
    * Desktop only
    */
-  WidgetsFlutterBinding.ensureInitialized();
-  // Must add this line.
-  await windowManager.ensureInitialized();
+    WidgetsFlutterBinding.ensureInitialized();
+    // Must add this line.
+    await windowManager.ensureInitialized();
 
-  WindowOptions windowOptions = const WindowOptions();
-  windowManager.waitUntilReadyToShow(windowOptions, () async {
-    await windowManager.show();
-    await windowManager.focus();
-  });
-  /***/
+    WindowOptions windowOptions = const WindowOptions();
+    windowManager.waitUntilReadyToShow(windowOptions, () async {
+      await windowManager.show();
+      await windowManager.focus();
+    });
+    /***/
+  }
+}
+
+void setWindowTitle(String title) {
+  if (!kIsWeb && (Platform.isWindows || Platform.isLinux || Platform.isMacOS)) {
+    windowManager.setTitle(title);
+  }
+}
+
+void main() async {
+  await setupWindow();
 
   runApp(const DynamicConfigurationWidget(
     child: BackofficeApp(),
@@ -40,7 +55,7 @@ class BackofficeApp extends StatelessWidget {
   Widget build(BuildContext context) {
     Locale? locale = DynamicConfiguration.of(context).locale;
     final String title = '<app.title>'.translate(locale);
-    windowManager.setTitle(title);
+    setWindowTitle(title);
     return I18n(
         child: MaterialApp(
       title: title,

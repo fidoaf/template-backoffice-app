@@ -106,21 +106,9 @@ class _LoginPageState extends State<LoginPage> {
                             return null;
                           }),
                     ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const ProofOfConceptWidget(),
-                          ),
-                        );
-                      },
-                      child: const Text(
-                        'Forgot Password',
-                      ),
-                    ),
                     Container(
                         height: 50,
-                        padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                        padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                         child: ElevatedButton(
                           child: const Text('Login'),
                           onPressed: () {
@@ -153,6 +141,18 @@ class _LoginPageState extends State<LoginPage> {
                             }
                           },
                         )),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const ProofOfConceptWidget(),
+                          ),
+                        );
+                      },
+                      child: const Text(
+                        'Forgot Password',
+                      ),
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
