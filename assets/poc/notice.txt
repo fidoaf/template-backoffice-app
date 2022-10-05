@@ -1,6 +1,18 @@
 DISCLAIMER:
 This is just a proof of concept, not intended for commercial use.
 
-List
-- One
-- Two
+This project showcases the infinite capabilies of Flutter as a development framework:
+- Multiplatform application with a single codebase.
+- Responsive design, adaptable to all screen sizes.
+- Adaptative theming, adjusted to the system preferences but also configurable.
+- Dynamic rendering.
+- Multilanguage.
+
+ROADMAP
+- App Creator panel: tool to customize every detail to the every project's needs.
+    - Customize application's name and title.
+    - Customize theme style.
+    - Customize assets: icons, videos, documents.
+    - Customize data consumption: webservice, database.
+- Chart rendering/customization.
+- Report printing/sharing.
