@@ -1,6 +1,9 @@
 import 'package:backoffice_app/configuration/dynamic_configuration.dart';
+import 'package:backoffice_app/services/message_service.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart';
+import 'package:screenshot/screenshot.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'package:backoffice_app/locale/widget.i18n.dart';
 import 'package:backoffice_app/services/backend_service.dart';
@@ -10,6 +13,9 @@ import 'package:backoffice_app/theming/widgets/dynamic_theme_auto_switch.dart';
 
 class FullSideBar extends StatelessWidget {
   const FullSideBar({super.key});
+
+  static final ScreenshotController screenshotController =
+      ScreenshotController();
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +47,8 @@ class FullSideBar extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: const Icon(Icons.favorite),
-            title: const Text('Favorites'),
+            leading: const Icon(Icons.home),
+            title: const Text('Dashboard'),
             onTap: () {},
           ),
           ListTile(
@@ -51,9 +57,21 @@ class FullSideBar extends StatelessWidget {
             onTap: () {},
           ),
           ListTile(
-            leading: const Icon(Icons.share),
-            title: const Text('Share'),
-            onTap: () {},
+            leading: const Icon(Icons.camera_alt),
+            title: const Text('Capture'),
+            onTap: () async {
+              MessageService.showWarning(context, message: 'Coming soon');
+              // final String path =
+              //     (await getApplicationDocumentsDirectory()).path;
+              // String fileName = '${DateTime.now().microsecondsSinceEpoch}.png';
+              // screenshotController
+              //     .captureAndSave(path, fileName: fileName)
+              //     .then((String? value) {
+              //   MessageService.showInfo(context,
+              //       message:
+              //           'Screenshot saved ${value == null ? "" : "in $value"}');
+              // });
+            },
           ),
           ListTile(
             leading: Badge(

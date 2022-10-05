@@ -39,6 +39,11 @@ dependencies:
   shared_preferences: ^2.0.15
   http: ^0.13.5
   badges: ^2.0.3
+  path_provider: ^2.0.11
+
+  screenshot: ^1.2.3
+
+  fl_chart: ^0.55.2
 
 
   # The following adds the Cupertino Icons font to your application.

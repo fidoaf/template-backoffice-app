@@ -40,13 +40,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (BackendService().logged) {
-      // Skip login page
-      _navigateHome();
-      return const CircularProgressIndicator();
-    } else {
-      Locale? locale = DynamicConfiguration.of(context).locale;
-      return Scaffold(
+    Locale? locale = DynamicConfiguration.of(context).locale;
+    return Scaffold(
         drawer: const BasicSideBar(),
         appBar: AppBar(
           leading: Builder(
@@ -186,13 +181,6 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ],
                   ))),
-        ),
-        // floatingActionButton: FloatingActionButton(
-        //   onPressed: _changelocale,
-        //   tooltip: '<btn.lang.label>'.i18n,
-        //   child: const Icon(Icons.language),
-        // ),
-      );
-    }
+        ));
   }
 }
