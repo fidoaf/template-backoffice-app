@@ -21,13 +21,15 @@ class BackendService {
   //
 
   // Temporary data
-  String? token;
+  String? _token;
+
+  bool get logged => _token?.isNotEmpty ?? false;
 
   Future<Map<String, dynamic>> login(String? user, String? password) async {
     String? error;
     dynamic data;
 
-    if (token == null) {
+    if (_token == null) {
       Uri url = Uri.https(HOST_DOMAIN, MAIN_ENDPOINT, {
         'format': DATA_FORMAT,
         'action': 'login',
@@ -41,7 +43,7 @@ class BackendService {
         dynamic rspData = jsonDecode(response.body);
         if (rspData['error'] == null) {
           data = rspData['data'];
-          token = data['token'];
+          _token = data['token'];
         } else {
           error = rspData['error']['message'];
         }
@@ -55,6 +57,6 @@ class BackendService {
   }
 
   logout() {
-    token = null;
+    _token = null;
   }
 }

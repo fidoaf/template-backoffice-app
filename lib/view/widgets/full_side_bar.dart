@@ -1,8 +1,9 @@
-import 'package:backoffice_app/default.i18n.dart';
-import 'package:backoffice_app/services/backend_service.dart';
+import 'package:backoffice_app/configuration/dynamic_configuration.dart';
 import 'package:flutter/material.dart';
-
 import 'package:badges/badges.dart';
+
+import 'package:backoffice_app/locale/widget.i18n.dart';
+import 'package:backoffice_app/services/backend_service.dart';
 
 import 'package:backoffice_app/locale/widgets/dynamic_locale_auto_switch.dart';
 import 'package:backoffice_app/theming/widgets/dynamic_theme_auto_switch.dart';
@@ -12,6 +13,7 @@ class FullSideBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Locale? locale = DynamicConfiguration.of(context).locale;
     return Drawer(
       child: ListView(
         // Remove padding
@@ -40,7 +42,7 @@ class FullSideBar extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.favorite),
-            title: Text('Favorites'.i18n),
+            title: const Text('Favorites'),
             onTap: () {},
           ),
           ListTile(
@@ -58,19 +60,19 @@ class FullSideBar extends StatelessWidget {
               badgeContent: const Text('3'),
               child: const Icon(Icons.notifications),
             ),
-            title: const Text('Notifications'),
+            title: Text('<btn.notifications>'.translate(locale)),
           ),
           const Divider(),
-          const ListTile(
-            leading: Icon(Icons.color_lens),
-            title: Text('Dark Theme'),
-            trailing: DynamicThemeAutoSwitch(),
+          ListTile(
+            leading: const Icon(Icons.color_lens),
+            title: Text('<btn.dark.theme>'.translate(locale)),
+            trailing: const DynamicThemeAutoSwitch(),
           ),
           const Divider(),
-          const ListTile(
-            leading: Icon(Icons.language),
-            title: Text('Language'),
-            trailing: DynamicLocaleAutoSwitch(),
+          ListTile(
+            leading: const Icon(Icons.language),
+            title: Text('<btn.lang>'.translate(locale)),
+            trailing: const DynamicLocaleAutoSwitch(),
           ),
           const Divider(),
           ListTile(

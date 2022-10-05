@@ -4,15 +4,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+// Desktop
 import 'package:window_manager/window_manager.dart';
 
 import 'package:i18n_extension/i18n_widget.dart';
-import 'package:backoffice_app/locale/main.i18n.dart';
+import 'package:backoffice_app/locale/widget.i18n.dart';
 
 // Theming
 import 'package:backoffice_app/configuration/dynamic_configuration.dart';
-
-// Desktop
 
 import 'package:backoffice_app/view/widgets/login_page.dart';
 

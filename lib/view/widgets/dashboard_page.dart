@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+
+import 'package:backoffice_app/locale/widget.i18n.dart';
+import 'package:backoffice_app/configuration/dynamic_configuration.dart';
 import 'package:backoffice_app/view/widgets/full_side_bar.dart';
 
 class DashboardWidget extends StatelessWidget {
@@ -11,6 +14,7 @@ class DashboardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Locale? locale = DynamicConfiguration.of(context).locale;
     return Scaffold(
         drawer: const FullSideBar(),
         appBar: AppBar(),
@@ -36,7 +40,7 @@ class DashboardWidget extends StatelessWidget {
                         );
                       });
                     } else {
-                      return const Text('Empty data');
+                      return Text('<btn.error.no_data>'.translate(locale));
                     }
                   } else {
                     return const CircularProgressIndicator();

@@ -1,3 +1,5 @@
+import 'package:backoffice_app/configuration/dynamic_configuration.dart';
+import 'package:backoffice_app/locale/widget.i18n.dart';
 import 'package:flutter/material.dart';
 
 import 'package:backoffice_app/locale/widgets/dynamic_locale_auto_switch.dart';
@@ -8,27 +10,25 @@ class BasicSideBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Locale? locale = DynamicConfiguration.of(context).locale;
     return Drawer(
-      // child: ListView(
-      //   children: const [DynamicThemeAutoSwitch(), DynamicLocaleAutoSwitch()],
-      // ),
       child: ListView(
         // Remove padding
         padding: EdgeInsets.zero,
-        children: const [
-          Divider(),
+        children: [
+          const Divider(),
           ListTile(
-            leading: Icon(Icons.color_lens),
-            title: Text('Dark Theme'),
-            trailing: DynamicThemeAutoSwitch(),
+            leading: const Icon(Icons.color_lens),
+            title: Text('<btn.dark.theme>'.translate(locale)),
+            trailing: const DynamicThemeAutoSwitch(),
           ),
-          Divider(),
+          const Divider(),
           ListTile(
-            leading: Icon(Icons.language),
-            title: Text('Language'),
-            trailing: DynamicLocaleAutoSwitch(),
+            leading: const Icon(Icons.language),
+            title: Text('<btn.lang>'.translate(locale)),
+            trailing: const DynamicLocaleAutoSwitch(),
           ),
-          Divider(),
+          const Divider(),
         ],
       ),
     );

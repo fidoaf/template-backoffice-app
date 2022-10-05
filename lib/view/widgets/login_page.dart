@@ -10,7 +10,7 @@ import 'package:backoffice_app/view/widgets/poc.dart';
 // Theming
 import 'package:backoffice_app/configuration/dynamic_configuration.dart';
 
-import 'package:backoffice_app/locale/main.i18n.dart';
+import 'package:backoffice_app/locale/widget.i18n.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key, required this.title});
@@ -29,158 +29,170 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  void _navigateHome() {
+    MessageService.clear(context);
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const DashboardWidget(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    Locale? locale = DynamicConfiguration.of(context).locale;
-    return Scaffold(
-      drawer: const BasicSideBar(),
-      appBar: AppBar(
-        leading: Builder(
-          builder: (BuildContext context) {
-            return IconButton(
-              icon: const Icon(
-                Icons.settings_applications,
-                size: 36,
-              ),
-              onPressed: () {
-                Scaffold.of(context).openDrawer();
-              },
-              tooltip: MaterialLocalizations.of(context).showMenuTooltip,
-            );
-          },
+    if (BackendService().logged) {
+      // Skip login page
+      _navigateHome();
+      return const CircularProgressIndicator();
+    } else {
+      Locale? locale = DynamicConfiguration.of(context).locale;
+      return Scaffold(
+        drawer: const BasicSideBar(),
+        appBar: AppBar(
+          leading: Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                icon: const Icon(
+                  Icons.settings_applications,
+                  size: 36,
+                ),
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+                tooltip: MaterialLocalizations.of(context).showMenuTooltip,
+              );
+            },
+          ),
         ),
-      ),
-      body: Center(
-        child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: Form(
-                key: _formKey,
-                child: ListView(
-                  children: <Widget>[
-                    Container(
-                        alignment: Alignment.center,
+        body: Center(
+          child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Form(
+                  key: _formKey,
+                  child: ListView(
+                    children: <Widget>[
+                      Container(
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.all(10),
+                          child: Text(
+                            '<app.title>'.translate(locale),
+                            style: const TextStyle(
+                                color: Colors.blue,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 30),
+                          )),
+                      Container(
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.all(10),
+                          child: Text(
+                            '<btn.signin>'.translate(locale),
+                            style: const TextStyle(fontSize: 20),
+                          )),
+                      Container(
                         padding: const EdgeInsets.all(10),
-                        child: Text(
-                          '<app.title>'.translate(locale),
-                          style: const TextStyle(
-                              color: Colors.blue,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 30),
-                        )),
-                    Container(
-                        alignment: Alignment.center,
-                        padding: const EdgeInsets.all(10),
-                        child: const Text(
-                          'Sign in',
-                          style: TextStyle(fontSize: 20),
-                        )),
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      child: TextFormField(
-                        controller: nameController,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'User Name',
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter a valid user name';
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                      child: TextFormField(
-                          obscureText: true,
-                          controller: passwordController,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Password',
+                        child: TextFormField(
+                          controller: nameController,
+                          decoration: InputDecoration(
+                            border: const OutlineInputBorder(),
+                            labelText: '<btn.field.user>'.translate(locale),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please enter a valid password';
+                              return '<btn.error.user>'.translate(locale);
                             }
                             return null;
-                          }),
-                    ),
-                    Container(
-                        height: 50,
-                        padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                        child: ElevatedButton(
-                          child: const Text('Login'),
-                          onPressed: () {
-                            // Validate form
-                            if (_formKey.currentState!.validate()) {
-                              //
-                              MessageService.showInfo(context,
-                                  message: 'Loading...');
-                              //
-                              apiService
-                                  .login(nameController.text,
-                                      passwordController.text)
-                                  .then((Map<String, dynamic> result) {
-                                if (result['error'] == null) {
-                                  MessageService.clear(context);
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const DashboardWidget(),
-                                    ),
-                                  );
-                                } else {
-                                  MessageService.showError(context,
-                                      message: result['error']);
-                                }
-                              });
-                            } else {
-                              MessageService.showError(context,
-                                  message: 'Please fill all the fields');
-                            }
                           },
-                        )),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const ProofOfConceptWidget(),
-                          ),
-                        );
-                      },
-                      child: const Text(
-                        'Forgot Password',
+                        ),
                       ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        const Text('Does not have account?'),
-                        TextButton(
-                          child: const Text(
-                            'Sign in',
-                            style: TextStyle(fontSize: 20),
-                          ),
-                          onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    const ProofOfConceptWidget(),
-                              ),
-                            );
-                          },
-                        )
-                      ],
-                    ),
-                  ],
-                ))),
-      ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _changelocale,
-      //   tooltip: '<btn.lang.label>'.i18n,
-      //   child: const Icon(Icons.language),
-      // ),
-    );
+                      Container(
+                        padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                        child: TextFormField(
+                            obscureText: true,
+                            controller: passwordController,
+                            decoration: InputDecoration(
+                              border: const OutlineInputBorder(),
+                              labelText: '<btn.field.pwd>'.translate(locale),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return '<btn.error.pwd>'.translate(locale);
+                              }
+                              return null;
+                            }),
+                      ),
+                      Container(
+                          height: 50,
+                          padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                          child: ElevatedButton(
+                            child: Text('<btn.login>'.translate(locale)),
+                            onPressed: () {
+                              // Validate form
+                              if (_formKey.currentState!.validate()) {
+                                //
+                                MessageService.showInfo(context,
+                                    message:
+                                        '${"<btn.loading>".translate(locale)}...');
+                                //
+                                apiService
+                                    .login(nameController.text,
+                                        passwordController.text)
+                                    .then((Map<String, dynamic> result) {
+                                  if (result['error'] == null) {
+                                    _navigateHome();
+                                  } else {
+                                    MessageService.showError(context,
+                                        message: result['error']);
+                                  }
+                                });
+                              } else {
+                                MessageService.showError(context,
+                                    message: '<btn.error.missing_fields>'
+                                        .translate(locale));
+                              }
+                            },
+                          )),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const ProofOfConceptWidget(),
+                            ),
+                          );
+                        },
+                        child: Text(
+                          '<btn.pwd.recovery>'.translate(locale),
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text('<btn.account.new>'.translate(locale)),
+                          TextButton(
+                            child: Text(
+                              '<btn.account.signin>'.translate(locale),
+                              style: const TextStyle(fontSize: 20),
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const ProofOfConceptWidget(),
+                                ),
+                              );
+                            },
+                          )
+                        ],
+                      ),
+                    ],
+                  ))),
+        ),
+        // floatingActionButton: FloatingActionButton(
+        //   onPressed: _changelocale,
+        //   tooltip: '<btn.lang.label>'.i18n,
+        //   child: const Icon(Icons.language),
+        // ),
+      );
+    }
   }
 }
