@@ -71,6 +71,23 @@ Useful rich widgets that help analyze both static and real-time data.
 
 ----
 
+## ROADMAP
+
+These are the future developments that will eventually be included in the template app:
+
+- App Creator panel: tool to customize every detail to the needs of the prospect companies.
+    - Customize application's name and title.
+    - Customize theme style.
+    - Customize assets: icons, videos, documents.
+    - Customize data consumption: webservice, database.
+- More data representation:
+    - Even further Chart customization.
+    - Geolocation representation with live maps.
+- Report printing/sharing.
+- More authentication methods: passwordless, OAuth.
+
+----
+
 ## DISCLAIMER
 
 This project showcases the infinite capabilies of Flutter as a development framework.
