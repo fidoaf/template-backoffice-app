@@ -1,24 +1,13 @@
 import 'dart:math';
 
 import 'package:backoffice_app/services/message_service.dart';
-import 'package:backoffice_app/theming/widgets/dynamic_theme_auto_switch.dart';
-import 'package:fl_chart/fl_chart.dart';
+import 'package:backoffice_app/view/widgets/dashboard_item_detail.dart';
 import 'package:flutter/material.dart';
 
 import 'package:backoffice_app/locale/widget.i18n.dart';
 import 'package:backoffice_app/configuration/dynamic_configuration.dart';
 import 'package:backoffice_app/view/widgets/full_side_bar.dart';
 import 'package:screenshot/screenshot.dart';
-
-// Define data structure for a bar group
-class DataItem {
-  int x;
-  double y1;
-  double y2;
-  double y3;
-  DataItem(
-      {required this.x, required this.y1, required this.y2, required this.y3});
-}
 
 class DashboardWidget extends StatelessWidget {
   const DashboardWidget({super.key});
@@ -55,53 +44,68 @@ class DashboardWidget extends StatelessWidget {
               padding: const EdgeInsets.all(10),
               itemCount: _myData.length,
               itemBuilder: (BuildContext ctx, index) {
-                return GestureDetector(
-                    onTap: () {
-                      MessageService.showInfo(context,
-                          message: '${"<btn.loading>".translate(locale)}...');
-                    },
-                    child: ColoredBox(
-                        color: _myData[index]['status']
-                            ? Colors.green.shade100
-                            : Colors.orange.shade100,
-                        child: Align(
-                            alignment: Alignment.center,
-                            child: ListView(shrinkWrap: true, children: [
-                              Center(
-                                  child: Text(_myData[index]['name'],
-                                      style: const TextStyle(
-                                        color: Colors.black,
-                                      ))),
-                              Center(
-                                  child: Text('(${_myData[index]['ip']})',
-                                      style: const TextStyle(
-                                        color: Colors.black,
-                                      ))),
-                              const Center(
-                                  child: Text('Status:',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                      ))),
-                              Center(
-                                child: Icon(
+                return MouseRegion(
+                    cursor: SystemMouseCursors.click,
+                    child: GestureDetector(
+                        onTap: () {
+                          if (_myData[index]['status']) {
+                            MessageService.showInfo(context,
+                                message:
+                                    '${"<btn.loading>".translate(locale)}...');
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) => DashboardDetailPage(
+                                      name:
+                                          _myData[index]['name'] ?? 'Server')),
+                            );
+                          } else {
+                            MessageService.showInfo(context,
+                                message:
+                                    '${"Server is currently down".translate(locale)}...');
+                          }
+                        },
+                        child: ColoredBox(
+                            color: _myData[index]['status']
+                                ? Colors.green.shade100
+                                : Colors.orange.shade100,
+                            child: Align(
+                                alignment: Alignment.center,
+                                child: ListView(shrinkWrap: true, children: [
+                                  Center(
+                                      child: Text(_myData[index]['name'],
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                          ))),
+                                  Center(
+                                      child: Text('(${_myData[index]['ip']})',
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                          ))),
+                                  const Center(
+                                      child: Text('Status:',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                          ))),
+                                  Center(
+                                    child: Icon(
+                                      _myData[index]['status']
+                                          ? Icons.check
+                                          : Icons.close,
+                                      color: _myData[index]['status']
+                                          ? Colors.green
+                                          : Colors.red,
+                                    ),
+                                  ),
                                   _myData[index]['status']
-                                      ? Icons.check
-                                      : Icons.close,
-                                  color: _myData[index]['status']
-                                      ? Colors.green
-                                      : Colors.red,
-                                ),
-                              ),
-                              _myData[index]['status']
-                                  ? Container()
-                                  : IconButton(
-                                      icon: const Icon(Icons.share),
-                                      color: Colors.black,
-                                      tooltip: 'Share failure report'
-                                          .translate(locale),
-                                      onPressed: () {},
-                                    )
-                            ]))));
+                                      ? Container()
+                                      : IconButton(
+                                          icon: const Icon(Icons.share),
+                                          color: Colors.black,
+                                          tooltip: 'Share failure report'
+                                              .translate(locale),
+                                          onPressed: () {},
+                                        )
+                                ])))));
               })),
     );
   }
