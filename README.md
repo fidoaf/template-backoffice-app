@@ -30,6 +30,13 @@ Right of the bat, the application identifies the company and the product.
 
 ![Application splash screen](https://raw.githubusercontent.com/fidoaf/template-backoffice-app/main/repo_files/assets/images/app_splash_screen.gif "Application splash screen")
 
+### Theming
+
+Easily tailor the application's theme to match the company's corporate color palette, also respecting the current system preferences.
+The user can override the defaults in settings, and those changes will apply across executions.
+
+![Application theming](https://raw.githubusercontent.com/fidoaf/template-backoffice-app/main/repo_files/assets/images/app_dark_theme.gif "Application theming")
+
 ## Multilanguage
 
 Localization is not only a matter of a one-to-one text translation but also making sure that the labels and messages read natural.
