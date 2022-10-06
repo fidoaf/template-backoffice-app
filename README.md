@@ -4,7 +4,7 @@ A new Flutter multipurpose app with the following features:
 
 * [Multi-platform](#cross-platform)
 * [Responsive](#responsive-design)
-* [Adaptative](#adaptative)
+* [Adaptative](#rich-content)
 * [Multilanguage](#multilanguage)
 * [Highly Customizable](#branding)
 
@@ -53,6 +53,14 @@ The login form performs the most basic validation, even though the process can b
 User interface that adapts to the screen size in order to improve the usability and readability of the content.
 
 ![Application responsive design](https://raw.githubusercontent.com/fidoaf/template-backoffice-app/main/repo_files/assets/images/app_responsive.gif "Application localization")
+
+## Rich content
+
+Infinite possibilities to display, manage and handle data from the webservice.
+
+Useful rich widgets that help analyze both static and real-time data.
+
+![Application rich content](https://raw.githubusercontent.com/fidoaf/template-backoffice-app/main/repo_files/assets/images/app_details.gif "Application rich content")
 
 ----
 
