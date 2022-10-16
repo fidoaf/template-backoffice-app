@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:backoffice_app/configuration/dynamic_configuration.dart';
+import 'package:backoffice_app/configuration/dynamic_configuration_service.dart';
 
 class DynamicThemeBtn extends StatelessWidget {
   const DynamicThemeBtn({super.key});

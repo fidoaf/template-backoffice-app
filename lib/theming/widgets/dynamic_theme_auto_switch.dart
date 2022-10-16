@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:backoffice_app/configuration/dynamic_configuration.dart';
+import 'package:backoffice_app/configuration/dynamic_configuration_service.dart';
 
 class DynamicThemeAutoSwitch extends StatelessWidget {
   const DynamicThemeAutoSwitch({super.key});

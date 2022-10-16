@@ -1,17 +1,20 @@
 import 'package:backoffice_app/services/message_service.dart';
-import 'package:backoffice_app/view/widgets/dashboard_page.dart';
+import 'package:backoffice_app/view/widgets/dashboard/dashboard_page.dart';
 import 'package:flutter/material.dart';
 
 import 'package:backoffice_app/services/backend_service.dart';
-import 'package:backoffice_app/view/widgets/basic_side_bar.dart';
-
-import 'package:backoffice_app/view/widgets/poc.dart';
+import 'package:backoffice_app/view/widgets/login/basic_side_bar.dart';
+import 'package:backoffice_app/view/widgets/prototype/poc.dart';
 
 // Theming
-import 'package:backoffice_app/configuration/dynamic_configuration.dart';
+import 'package:backoffice_app/configuration/dynamic_configuration_service.dart';
 
 import 'package:backoffice_app/locale/widget.i18n.dart';
 
+///
+/// Simple login form with standard basic validation.
+/// The credentials are not stored locally, just the session token.
+///
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key, required this.title});
 

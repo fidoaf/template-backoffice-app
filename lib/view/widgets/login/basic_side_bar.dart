@@ -1,10 +1,14 @@
-import 'package:backoffice_app/configuration/dynamic_configuration.dart';
+import 'package:backoffice_app/configuration/dynamic_configuration_service.dart';
 import 'package:backoffice_app/locale/widget.i18n.dart';
 import 'package:flutter/material.dart';
 
-import 'package:backoffice_app/locale/widgets/dynamic_locale_auto_switch.dart';
-import 'package:backoffice_app/theming/widgets/dynamic_theme_auto_switch.dart';
+import 'package:backoffice_app/configuration/dynamic_configuration_widgets.dart';
 
+///
+/// Settings to be displayed when there is no active session:
+/// - Preferred theme
+/// - Preferred language
+///
 class BasicSideBar extends StatelessWidget {
   const BasicSideBar({super.key});
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:backoffice_app/configuration/dynamic_configuration.dart';
+import 'package:backoffice_app/configuration/dynamic_configuration_service.dart';
 
 import 'package:backoffice_app/locale/locale_names.dart';
 

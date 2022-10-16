@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/services.dart' show rootBundle;
 
+///
+/// Placeholder widget to be displayed when the unimplemented
+/// functionality is actioned.
+///
 class ProofOfConceptWidget extends StatelessWidget {
   const ProofOfConceptWidget({super.key});
 
+  // Use the text stored in an asset file
   Future<String> loadNotice() async {
     return await rootBundle.loadString('assets/poc/notice.txt');
   }

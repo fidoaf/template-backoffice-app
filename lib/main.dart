@@ -16,9 +16,9 @@ import 'package:i18n_extension/i18n_widget.dart';
 import 'package:backoffice_app/locale/widget.i18n.dart';
 
 // Theming
-import 'package:backoffice_app/configuration/dynamic_configuration.dart';
+import 'package:backoffice_app/configuration/dynamic_configuration_service.dart';
 
-import 'package:backoffice_app/view/widgets/login_page.dart';
+import 'package:backoffice_app/view/widgets/login/login_page.dart';
 
 Future<void> setupWindow() async {
   if (!kIsWeb && (Platform.isWindows || Platform.isLinux || Platform.isMacOS)) {
@@ -44,6 +44,11 @@ void setWindowTitle(String title) {
   }
 }
 
+///
+/// The configuration logic widget (theming and localization)
+/// wrapping around the main application layer in order to
+/// rebuild the entire UI when changes are performed.
+///
 void main() async {
   await setupWindow();
 

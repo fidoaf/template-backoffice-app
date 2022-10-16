@@ -1,12 +1,12 @@
 import 'dart:math';
 
 import 'package:backoffice_app/services/message_service.dart';
-import 'package:backoffice_app/view/widgets/dashboard_item_detail.dart';
+import 'package:backoffice_app/view/widgets/dashboard/dashboard_item_detail.dart';
 import 'package:flutter/material.dart';
 
 import 'package:backoffice_app/locale/widget.i18n.dart';
-import 'package:backoffice_app/configuration/dynamic_configuration.dart';
-import 'package:backoffice_app/view/widgets/full_side_bar.dart';
+import 'package:backoffice_app/configuration/dynamic_configuration_service.dart';
+import 'package:backoffice_app/view/widgets/login/full_side_bar.dart';
 import 'package:screenshot/screenshot.dart';
 
 class DashboardWidget extends StatelessWidget {

@@ -1,16 +1,20 @@
-import 'package:backoffice_app/configuration/dynamic_configuration.dart';
+import 'package:backoffice_app/configuration/dynamic_configuration_service.dart';
 import 'package:backoffice_app/services/message_service.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart';
 import 'package:screenshot/screenshot.dart';
-import 'package:path_provider/path_provider.dart';
 
 import 'package:backoffice_app/locale/widget.i18n.dart';
 import 'package:backoffice_app/services/backend_service.dart';
 
-import 'package:backoffice_app/locale/widgets/dynamic_locale_auto_switch.dart';
-import 'package:backoffice_app/theming/widgets/dynamic_theme_auto_switch.dart';
+import 'package:backoffice_app/configuration/dynamic_configuration_widgets.dart';
 
+///
+/// Complete side menu:
+/// - Current session information => Logged user.
+/// - Available actions.
+/// - Preferred theme/language.
+///
 class FullSideBar extends StatelessWidget {
   const FullSideBar({super.key});
 
